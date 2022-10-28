@@ -15,6 +15,7 @@ class CreateQuickBooksTokensTable extends Migration
     public function up()
     {
         Schema::create('quickbooks_tokens', function (Blueprint $table) {
+            DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
             $user_id_type = DB::getSchemaBuilder()
                               ->getColumnType('users', 'id') === 'bigint' ? 'unsignedBigInteger' : 'unsignedInteger';
 
@@ -28,10 +29,6 @@ class CreateQuickBooksTokensTable extends Migration
 
             $table->timestamps();
 
-            $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
         });
     }
 
